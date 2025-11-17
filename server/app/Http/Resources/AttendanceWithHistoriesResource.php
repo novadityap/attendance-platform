@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\AttendanceHistoryResource;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class AttendanceWithHistoriesResource extends JsonResource
+{
+  /**
+   * Transform the resource into an array.
+   *
+   * @return array<string, mixed>
+   */
+  public function toArray(Request $request): array
+  {
+    return [
+      'id' => $this->id,
+      'employee' => new EmployeeResource($this->employee),
+      'clockIn' => $this->clock_in->format('Y-m-d H:i:s'),
+      'clockOut' => $this->clock_out ? $this->clock_out->format('Y-m-d H:i:s') : null,
+      'histories' => AttendanceHistoryResource::collection($this->histories),
+      'createdAt' => $this->created_at,
+      'updatedAt' => $this->updated_at,
+    ];
+  }
+}

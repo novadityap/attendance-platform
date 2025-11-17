@@ -1,0 +1,55 @@
+services:
+  server:
+    image: novadityap/attendance-app-server-dev
+    container_name: attendance-app-server-dev
+    build:
+      context: ./server
+      dockerfile: Dockerfile.development
+    env_file:
+      - ./server/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    restart: always
+    volumes:
+      - ./server:/var/www/html
+    networks:
+      - attendance-app-dev
+
+  client:
+    image: novadityap/attendance-app-client-dev
+    container_name: attendance-app-client-dev
+    build:
+      context: ./client
+      dockerfile: Dockerfile.development
+    env_file:
+      - ./client/.env.development
+    ports:
+      - "5173:5173"
+    restart: always
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    networks:
+      - attendance-app-dev
+
+  postgres:
+    container_name: attendance-app-postgres-dev
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - attendance-postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: aditya123
+      POSTGRES_DB: attendance_app
+    networks:
+      - attendance-app-dev
+
+volumes:
+  attendance-postgres-data:
+    name: attendance-postgres-data
+networks:
+  attendance-app-dev:
+    name: attendance-app-dev

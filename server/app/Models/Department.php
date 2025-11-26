@@ -14,6 +14,10 @@ class Department extends Model
   public $incrementing = false;
   protected $keyType = 'string';
   protected $guarded = [];
+  protected $casts = [
+    'max_check_in_time' => 'datetime:H:i',
+    'max_check_out_time' => 'datetime:H:i'
+  ];
 
   public function employees(): HasMany
   {

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Employee extends Authenticatable
@@ -34,6 +35,17 @@ class Employee extends Authenticatable
     return [
       'role' => $this->role->name
     ];
+  }
+
+  protected function name(): Attribute
+  {
+    return Attribute::make(
+      get: fn(string $value) =>
+      collect(explode(' ', strtolower($value)))
+        ->filter(fn($word) => trim($word) !== '')
+        ->map(fn($word) => ucfirst($word))
+        ->join(' ')
+    );
   }
 
   public function department(): BelongsTo

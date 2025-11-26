@@ -15,8 +15,8 @@ class Attendance extends Model
   protected $keyType = 'string';
   protected $guarded = [];
   protected $casts = [
-    'clock_in' => 'datetime',
-    'clock_out' => 'datetime',
+    'check_in' => 'datetime',
+    'check_out' => 'datetime',
   ];
 
   public function histories(): HasMany

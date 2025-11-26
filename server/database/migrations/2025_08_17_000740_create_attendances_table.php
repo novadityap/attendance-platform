@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('employee_id')->constrained()->onDelete('cascade');
-            $table->timestamp('clock_in');
-            $table->timestamp('clock_out')->nullable();
+            $table->timestamp('check_in');
+            $table->timestamp('check_out')->nullable();
             $table->timestamps();
         });
     }

@@ -17,15 +17,15 @@ class DepartmentSeeder extends Seeder
     Department::create([
       'id' => Str::uuid(),
       'name' => 'IT',
-      'max_clock_in_time' => '12:00:00',
-      'max_clock_out_time' => '17:00:00',
+      'max_check_in_time' => '12:00:00',
+      'max_check_out_time' => '17:00:00',
     ]);
 
     Department::create([
       'id' => Str::uuid(),
       'name' => 'HRD',
-      'max_clock_in_time' => '12:30:00',
-      'max_clock_out_time' => '16:30:00',
+      'max_check_in_time' => '12:30:00',
+      'max_check_out_time' => '16:30:00',
     ]);
   }
 }

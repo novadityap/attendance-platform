@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Helpers\CloudinaryHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\EmployeeResource;
 use App\Http\Requests\Employee\ProfileRequest;
 use App\Http\Requests\Employee\CreateEmployeeRequest;
@@ -82,34 +83,23 @@ class EmployeeController extends Controller
 
   public function update(UpdateEmployeeRequest $request, Employee $employee): JsonResponse
   {
-    $employee->update($request->validated());
-
-    return response()->json([
-      'message' => 'Employee updated successfully',
-      'data' => new EmployeeResource($employee->load('department'))
-    ], 200);
-  }
-
-  public function profile(ProfileRequest $request, Employee $employee): JsonResponse
-  {
     $fields = $request->validated();
-
+    
     if (isset($fields['password'])) {
       $fields['password'] = Hash::make($fields['password']);
     }
-
+    
     if ($request->hasFile('avatar')) {
-      $uploadedFile = cloudinary()->uploadApi()->upload($request->file('avatar')->getRealPath(), ['folder' => 'avatars']);
-      $fields['avatar'] = $uploadedFile['secure_url'];
+      $publicId = Storage::putFile('avatars', $request->file('avatar'));
+      $fields['avatar'] = Storage::url($publicId);
       $this->deleteAvatar($employee->avatar);
     }
 
     $employee->update($fields);
 
     return response()->json([
-      'code' => 200,
-      'message' => 'Profile updated successfully',
-      'data' => new EmployeeResource($employee)
+      'message' => 'Employee updated successfully',
+      'data' => new EmployeeResource($employee->load('department'))
     ], 200);
   }
 
@@ -125,7 +115,7 @@ class EmployeeController extends Controller
   protected function deleteAvatar(string $avatarUrl): void
   {
     if (config('app.default_avatar_url') !== $avatarUrl) {
-      cloudinary()->uploadApi()->destroy(CloudinaryHelper::extractPublicId($avatarUrl));
+      Storage::delete(CloudinaryHelper::extractPublicId($avatarUrl));
     }
   }
 }

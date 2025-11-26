@@ -21,20 +21,24 @@ class AttendanceController extends Controller
     $departmentId = $request->input('department_id');
 
     $attendances = Attendance::with(['employee.department', 'histories'])
-    ->when($q, function ($query) use ($q) {
-        $query->whereHas('histories', fn($h) => $h
+      ->when($q, function ($query) use ($q) {
+        $query->whereHas(
+          'histories',
+          fn($h) => $h
             ->where('date_attendance', 'ilike', "%{$q}%")
             ->orWhere('attendance_type', 'ilike', "%{$q}%")
-        )->orWhereHas('employee', fn($eq) => $eq
-            ->where('name', 'ilike', "%{$q}%")
-            ->orWhere('email', 'ilike', "%{$q}%")
-            ->orWhereHas('department', fn($dq) => $dq->where('name', 'ilike', "%{$q}%"))
-        );
-    })
-    ->when($date, fn($q) => $q->whereDate('clock_in', $date))
-    ->when($departmentId, fn($q) => $q->whereHas('employee', fn($eq) => $eq->where('department_id', $departmentId)))
-    ->orderBy('clock_in', 'desc')
-    ->paginate($limit, ['*'], 'page', $page);
+        )->orWhereHas(
+            'employee',
+            fn($eq) => $eq
+              ->where('name', 'ilike', "%{$q}%")
+              ->orWhere('email', 'ilike', "%{$q}%")
+              ->orWhereHas('department', fn($dq) => $dq->where('name', 'ilike', "%{$q}%"))
+          );
+      })
+      ->when($date, fn($q) => $q->whereDate('check_in', $date))
+      ->when($departmentId, fn($q) => $q->whereHas('employee', fn($eq) => $eq->where('department_id', $departmentId)))
+      ->orderBy('check_in', 'desc')
+      ->paginate($limit, ['*'], 'page', $page);
 
     return response()->json([
       'message' => 'Attendances retrieved successfully',
@@ -48,11 +52,21 @@ class AttendanceController extends Controller
     ]);
   }
 
-  public function clockIn(Request $request): JsonResponse
+  public function delete(Attendance $attendance): JsonResponse
+  {
+    $attendance->delete();
+
+    return response()->json([
+      'code' => 200,
+      'message' => 'Attendance deleted successfully'
+    ], 200);
+  }
+
+  public function checkIn(Request $request): JsonResponse
   {
     $employeeId = auth()->user()->id;
     $attendance = Attendance::where('employee_id', $employeeId)
-      ->whereDate('clock_in', Carbon::today())
+      ->whereDate('check_in', Carbon::today())
       ->first();
 
     if ($attendance) {
@@ -61,8 +75,8 @@ class AttendanceController extends Controller
 
     $attendance = Attendance::create([
       'employee_id' => $employeeId,
-      'clock_in' => now(),
-      'clock_out' => null,
+      'check_in' => now(),
+      'check_out' => null,
     ]);
 
     AttendanceHistory::create([
@@ -78,23 +92,23 @@ class AttendanceController extends Controller
     ], 200);
   }
 
-  public function clockOut(Request $request): JsonResponse
+  public function checkOut(Request $request): JsonResponse
   {
     $employeeId = auth()->user()->id;
     $attendance = Attendance::where('employee_id', $employeeId)
-      ->whereDate('clock_in', Carbon::today())
+      ->whereDate('check_in', Carbon::today())
       ->first();
 
     if (!$attendance) {
       return response()->json(['message' => 'There is no check in today'], 400);
     }
 
-    if ($attendance->clock_out) {
+    if ($attendance->check_out) {
       return response()->json(['message' => 'Already checked out today'], 400);
     }
 
     $attendance->update([
-      'clock_out' => now()
+      'check_out' => now()
     ]);
 
     AttendanceHistory::create([

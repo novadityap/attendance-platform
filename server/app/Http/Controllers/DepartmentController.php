@@ -46,8 +46,8 @@ class DepartmentController extends Controller
       ->when($q, function ($query) use ($q) {
         $query->where(function ($subQuery) use ($q) {
           $subQuery->where('name', 'ilike', "%{$q}%")
-            ->orWhere('max_clock_in_time', 'ilike', "%{$q}%")
-            ->orWhere('max_clock_out_time', 'ilike', "%{$q}%");
+            ->orWhere('max_check_in_time', 'ilike', "%{$q}%")
+            ->orWhere('max_check_out_time', 'ilike', "%{$q}%");
         });
       })
       ->orderBy('created_at', 'desc')

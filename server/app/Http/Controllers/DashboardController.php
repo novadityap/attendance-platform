@@ -14,7 +14,7 @@ class DashboardController extends Controller
 {
   public function stats(): JsonResponse
   {
-    $recentAttendances = Attendance::with(['employee:id,email'])
+    $recentAttendances = Attendance::with(['employee:id,name'])
       ->orderByDesc('created_at')
       ->take(5)
       ->get();

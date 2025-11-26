@@ -17,8 +17,8 @@ class AttendanceResource extends JsonResource
   {
     return [
       'id' => $this->id,
-      'clockIn' => $this->clock_in->format('Y-m-d H:i:s'),
-      'clockOut' => $this->clock_out ? $this->clock_out->format('Y-m-d H:i:s') : null,
+      'checkIn' => $this->check_in->format('Y-m-d H:i:s'),
+      'checkOut' => $this->check_out ? $this->check_out->format('Y-m-d H:i:s') : null,
       'employee' => new EmployeeResource($this->employee),
       'createdAt' => $this->created_at,
       'updatedAt' => $this->updated_at,

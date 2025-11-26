@@ -16,10 +16,12 @@ class CreateDepartmentRequest extends FormRequest
 
   protected function prepareForValidation(): void
   {
+    logger('DEBUG', [
+      'Request' => $this->all()
+    ]);
     $this->merge([
-      'name' => $this->input('name'),
-      'max_clock_in_time' => $this->input('maxClockInTime'),
-      'max_clock_out_time' => $this->input('maxClockOutTime'),
+      'max_check_in_time' => $this->get('maxCheckInTime'),
+      'max_check_out_time' => $this->get('maxCheckOutTime'),
     ]);
   }
 
@@ -32,8 +34,8 @@ class CreateDepartmentRequest extends FormRequest
   {
     return [
       'name' => 'required|string|max:255|unique:departments,name',
-      'max_clock_in_time' => 'required|date_format:H:i',
-      'max_clock_out_time' => 'required|date_format:H:i|after:max_clock_in_time',
+      'max_check_in_time' => 'required|date_format:H:i',
+      'max_check_out_time' => 'required|date_format:H:i|after:max_check_in_time',
     ];
   }
 }

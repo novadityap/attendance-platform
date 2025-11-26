@@ -16,10 +16,16 @@ class UpdateEmployeeRequest extends FormRequest
 
   protected function prepareForValidation(): void
   {
-    $this->merge([
-      'department_id' => $this->input('departmentId'),
-      'role_id' => $this->input('roleId')
-    ]);
+    $mapping = [
+      'departmentId' => 'department_id',
+      'roleId' => 'role_id',
+    ];
+
+    foreach ($mapping as $from => $to) {
+      if ($this->has($from)) {
+        $this->merge([$to => $this->get($from)]);
+      }
+    }
   }
 
   /**
@@ -30,10 +36,11 @@ class UpdateEmployeeRequest extends FormRequest
   public function rules(): array
   {
     return [
+      'avatar' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
       'department_id' => 'sometimes|required|exists:departments,id',
       'role_id' => 'sometimes|required|exists:roles,id',
       'name' => 'sometimes|required|string|max:255',
-      'email' => 'sometimes|required|string',
+      'email' => 'sometimes|required|string|unique:employees,email,' . $this->route('employee')->id,
       'password' => 'sometimes|required|string',
     ];
   }

@@ -9,11 +9,11 @@ class SearchRoleRequest extends FormRequest
   public function prepareForValidation()
   {
     $this->merge([
-      'q' => $this->input('q', null),
-      'page' => (int) $this->input('page', 1),
-      'limit' => (int) $this->input('limit', 10),
-      'sortBy' => $this->input('sortBy', 'created_at'),
-      'sortOrder' => $this->input('sortOrder', 'desc'),
+      'q' => $this->get('q', null),
+      'page' => (int) $this->get('page', 1),
+      'limit' => (int) $this->get('limit', 10),
+      'sortBy' => $this->get('sortBy', 'created_at'),
+      'sortOrder' => $this->get('sortOrder', 'desc'),
     ]);
   }
 

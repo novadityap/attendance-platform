@@ -17,8 +17,8 @@ class CreateEmployeeRequest extends FormRequest
   protected function prepareForValidation(): void
   {
     $this->merge([
-      'department_id' => $this->input('departmentId'),
-      'role_id' => $this->input('roleId')
+      'department_id' => $this->get('departmentId'),
+      'role_id' => $this->get('roleId')
     ]);
   }
 

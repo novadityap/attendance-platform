@@ -17,9 +17,9 @@ class SearchDepartmentRequest extends FormRequest
   public function prepareForValidation(): void
   {
     $this->merge([
-      'page' => $this->input('page', 1),
-      'limit' => $this->input('limit', 10),
-      'q' => $this->input('q', null),
+      'page' => $this->get('page', 1),
+      'limit' => $this->get('limit', 10),
+      'q' => $this->get('q', null),
     ]);
   }
 

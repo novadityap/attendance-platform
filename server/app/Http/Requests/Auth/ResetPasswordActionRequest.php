@@ -17,7 +17,7 @@ class ResetPasswordActionRequest extends FormRequest
     protected function prepareForValidation(): void
   {
     $this->merge([
-      'new_password' => $this->input('newPassword')
+      'new_password' => $this->get('newPassword')
     ]);
   }
 

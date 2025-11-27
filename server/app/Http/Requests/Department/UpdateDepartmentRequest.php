@@ -37,8 +37,28 @@ class UpdateDepartmentRequest extends FormRequest
   {
     return [
       'name' => 'sometimes|required|string|max:255',
+      'min_check_in_time' => 'sometimes|required|date_format:H:i',
+      'min_check_out_time' => 'sometimes|required|date_format:H:i',
       'max_check_in_time' => 'sometimes|required|date_format:H:i',
       'max_check_out_time' => 'sometimes|required|date_format:H:i'
     ];
+  }
+
+  public function withValidator($validator)
+  {
+    $validator->after(function ($validator) {
+      $minIn = $this->input('min_check_in_time');
+      $maxIn = $this->input('max_check_in_time');
+      $minOut = $this->input('min_check_out_time');
+      $maxOut = $this->input('max_check_out_time');
+
+      if ($minIn && $maxIn && $minIn > $maxIn) {
+        $validator->errors()->add('min_check_in_time', 'Minimum Check-In cannot be greater than Maximum Check-In.');
+      }
+
+      if ($minOut && $maxOut && $minOut > $maxOut) {
+        $validator->errors()->add('min_check_out_time', 'Minimum Check-Out cannot be greater than Maximum Check-Out.');
+      }
+    });
   }
 }

@@ -19,8 +19,8 @@ class AttendanceWithHistoriesResource extends JsonResource
     return [
       'id' => $this->id,
       'employee' => new EmployeeResource($this->employee),
-      'checkIn' => $this->check_in->format('Y-m-d H:i:s'),
-      'checkOut' => $this->check_out ? $this->check_out->format('Y-m-d H:i:s') : null,
+      'checkIn' => $this->check_in,
+      'checkOut' => $this->check_out,
       'histories' => AttendanceHistoryResource::collection($this->histories),
       'createdAt' => $this->created_at,
       'updatedAt' => $this->updated_at,

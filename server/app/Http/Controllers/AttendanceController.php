@@ -12,6 +12,12 @@ use App\Http\Resources\AttendanceWithHistoriesResource;
 
 class AttendanceController extends Controller
 {
+  public function __construct()
+  {
+    $this->attendance = new Attendance();
+    $this->attendanceHistories = new AttendanceHistory();
+  }
+
   public function search(Request $request): JsonResponse
   {
     $page = $request->input('page', 1);
@@ -62,25 +68,42 @@ class AttendanceController extends Controller
     ], 200);
   }
 
-  public function checkIn(Request $request): JsonResponse
+  public function today(Attendance $attendance): JsonResponse
   {
     $employeeId = auth()->user()->id;
     $attendance = Attendance::where('employee_id', $employeeId)
-      ->whereDate('check_in', Carbon::today())
+      ->whereDate('created_at', today())
       ->first();
 
-    if ($attendance) {
-      return response()->json(['message' => 'Already checked in today'], 400);
-    }
+    return response()->json([
+      'message' => 'Attendance retrieved successfully',
+      'data' => $attendance ? new AttendanceResource($attendance) : null,
+    ]);
+  }
+
+  public function checkIn(Request $request): JsonResponse
+  {
+    $employee = auth()->user();
+    $attendance = Attendance::where('employee_id', $employee->id)
+      ->whereDate('check_in', today())
+      ->exists();
+
+    abort_if($attendance, 409, 'Already checked in today');
+
+    abort_if(
+      now('Asia/Jakarta')->format('H:i') < $employee->department->min_check_in_time,
+      403,
+      "Minimum check in time is {$employee->department->min_check_in_time}"
+    );
 
     $attendance = Attendance::create([
-      'employee_id' => $employeeId,
+      'employee_id' => $employee->id,
       'check_in' => now(),
       'check_out' => null,
     ]);
 
     AttendanceHistory::create([
-      'employee_id' => $employeeId,
+      'employee_id' => $employee->id,
       'attendance_id' => $attendance->id,
       'date_attendance' => now(),
       'attendance_type' => 1,
@@ -89,30 +112,40 @@ class AttendanceController extends Controller
     return response()->json([
       'message' => 'Check in successfully',
       'data' => new AttendanceResource($attendance),
-    ], 200);
+    ], 201);
   }
 
   public function checkOut(Request $request): JsonResponse
   {
-    $employeeId = auth()->user()->id;
-    $attendance = Attendance::where('employee_id', $employeeId)
-      ->whereDate('check_in', Carbon::today())
+    $employee = auth()->user();
+    $attendance = Attendance::where('employee_id', $employee->id)
+      ->whereDate('check_in', today())
       ->first();
 
-    if (!$attendance) {
-      return response()->json(['message' => 'There is no check in today'], 400);
-    }
+    abort_if(
+      !$attendance,
+      400,
+      'There is no check in today'
+    );
 
-    if ($attendance->check_out) {
-      return response()->json(['message' => 'Already checked out today'], 400);
-    }
+    abort_if(
+      $attendance->check_out !== null,
+      409,
+      'Already checked out today'
+    );
+
+    abort_if(
+      now('Asia/Jakarta')->format('H:i') < $employee->department->min_check_out_time,
+      403,
+      "Minimum check out time is {$employee->department->min_check_out_time}"
+    );
 
     $attendance->update([
-      'check_out' => now()
+      'check_out' => now(),
     ]);
 
     AttendanceHistory::create([
-      'employee_id' => $employeeId,
+      'employee_id' => $employee->id,
       'attendance_id' => $attendance->id,
       'date_attendance' => now(),
       'attendance_type' => 2,
@@ -120,7 +153,7 @@ class AttendanceController extends Controller
 
     return response()->json([
       'message' => 'Check out successfully',
-      'data' => new AttendanceResource($attendance)
+      'data' => new AttendanceResource($attendance),
     ], 200);
   }
 }

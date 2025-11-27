@@ -17,12 +17,10 @@ class DepartmentResource extends JsonResource
     return [
       'id' => $this->id,
       'name' => $this->name,
-      'maxCheckInTime' => $this->max_check_in_time
-        ? $this->max_check_in_time->format('H:i')
-        : null,
-      'maxCheckOutTime' => $this->max_check_out_time
-        ? $this->max_check_out_time->format('H:i')
-        : null,
+      'minCheckInTime' => $this->min_check_in_time,
+      'minCheckOutTime' => $this->min_check_out_time,
+      'maxCheckInTime' => $this->max_check_in_time,
+      'maxCheckOutTime' => $this->max_check_out_time,
     ];
   }
 }

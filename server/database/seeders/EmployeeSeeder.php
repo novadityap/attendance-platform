@@ -19,8 +19,8 @@ class EmployeeSeeder extends Seeder
     Employee::create([
       'id' => Str::uuid(),
       'department_id' => Department::where('name', 'IT')->first()->id,
-      'name' => 'aditya',
-      'email' => 'aditya@email.com',
+      'name' => 'employee',
+      'email' => 'employee@email.com',
       'password' => 'employee123',
       'role_id' => Role::where('name', 'employee')->first()->id
     ]);
@@ -28,8 +28,8 @@ class EmployeeSeeder extends Seeder
     Employee::create([
       'id' => Str::uuid(),
       'department_id' => Department::where('name', 'HRD')->first()->id,
-      'name' => 'pratama',
-      'email' => 'pratama@email.com',
+      'name' => 'admin',
+      'email' => 'admin@email.com',
       'password' => 'admin123',
       'role_id' => Role::where('name', 'admin')->first()->id
     ]);

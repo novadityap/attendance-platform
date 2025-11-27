@@ -13,9 +13,6 @@ class AttendanceHistory extends Model
   public $incrementing = false;
   protected $keyType = 'string';
   protected $guarded = [];
-  protected $casts = [
-    'date_attendance' => 'datetime'
-  ];
 
   public function attendance(): BelongsTo
   {

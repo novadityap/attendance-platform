@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('employee_id')->constrained()->onDelete('cascade');
             $table->foreignUuid('attendance_id')->constrained()->onDelete('cascade');
-            $table->timestamp('date_attendance');
+            $table->datetime('date_attendance');
             $table->tinyInteger('attendance_type');
             $table->timestamps();
         });

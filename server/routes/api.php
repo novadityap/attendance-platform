@@ -36,6 +36,7 @@ Route::prefix('departments')->middleware('auth:api')->controller(DepartmentContr
     Route::patch('/{department}', 'update');
     Route::delete('/{department}', 'delete');
   });
+  
   Route::middleware('authorize:admin,employee')->group(function () {
     Route::get('/{department}', 'show');
   });
@@ -54,6 +55,8 @@ Route::prefix('attendances')->middleware('auth:api')->controller(AttendanceContr
     Route::get('/search', 'search');
     Route::delete('/{attendance}', 'delete');
   });
+
+  Route::get('/today', 'today');
   Route::post('/checkIn', 'checkIn');
   Route::patch('/checkOut', 'checkOut');
 });

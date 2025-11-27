@@ -10,15 +10,15 @@ const attendanceApi = createApi({
       query: params => ({
         url: '/attendances/search',
         method: 'GET',
-        params
+        params,
       }),
       providesTags: result =>
         result
           ? [
               ...result.data.map(({ id }) => ({ type: 'Attendance', id })),
-              { type: 'Attendance', id: 'LIST' }
+              { type: 'Attendance', id: 'LIST' },
             ]
-          : [{ type: 'Attendance', id: 'LIST' }]
+          : [{ type: 'Attendance', id: 'LIST' }],
     }),
     removeAttendance: builder.mutation({
       query: attendanceId => ({
@@ -29,20 +29,31 @@ const attendanceApi = createApi({
         { type: 'Attendance', id: attendanceId },
       ],
     }),
+    todayAttendance: builder.query({
+      query: () => ({
+        url: '/attendances/today',
+        method: 'GET',
+      }),
+      providesTags: [{ type: 'Attendance', id: 'TODAY' }],
+    }),
     checkInAttendance: builder.mutation({
-      query: data => ({
-        url: '/attendances/checkin',
+      query: () => ({
+        url: '/attendances/checkIn',
         method: 'POST',
       }),
-      invalidatesTags: [{ type: 'Attendance', id: 'LIST' }]
+      invalidatesTags: [
+        { type: 'Attendance', id: 'TODAY' },
+        { type: 'Attendance', id: 'LIST' },
+      ],
     }),
     checkOutAttendance: builder.mutation({
-      query: data => ({
-        url: '/attendances/checkout',
+      query: () => ({
+        url: '/attendances/checkOut',
         method: 'PATCH',
       }),
-      invalidatesTags: (result, error, { attendanceId }) => [
-        { type: 'Attendance', id: attendanceId }
+      invalidatesTags: [
+        { type: 'Attendance', id: 'TODAY' },
+        { type: 'Attendance', id: 'LIST' },
       ],
     }),
   }),
@@ -52,9 +63,9 @@ export const {
   useSearchAttendancesQuery,
   useLazySearchAttendancesQuery,
   useRemoveAttendanceMutation,
+  useTodayAttendanceQuery,
   useCheckInAttendanceMutation,
-  useCheckOutAttendanceMutation
+  useCheckOutAttendanceMutation,
 } = attendanceApi;
 
 export default attendanceApi;
-

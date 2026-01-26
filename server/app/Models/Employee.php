@@ -37,17 +37,6 @@ class Employee extends Authenticatable
     ];
   }
 
-  protected function name(): Attribute
-  {
-    return Attribute::make(
-      get: fn(string $value) =>
-      collect(explode(' ', strtolower($value)))
-        ->filter(fn($word) => trim($word) !== '')
-        ->map(fn($word) => ucfirst($word))
-        ->join(' ')
-    );
-  }
-
   public function department(): BelongsTo
   {
     return $this->belongsTo(Department::class);

@@ -30,10 +30,10 @@ class CreateEmployeeRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'department_id' => 'required|exists:departments,id',
-      'role_id' => 'required|exists:roles,id',
+      'department_id' => 'required|uuid|exists:departments,id',
+      'role_id' => 'required|uuid|exists:roles,id',
       'name' => 'required|string|max:255',
-      'email' => 'required|string',
+      'email' => 'required|string|email|unique:employees,email',
       'password' => 'required|string',
     ];
   }

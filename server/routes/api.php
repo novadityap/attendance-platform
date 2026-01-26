@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
@@ -23,7 +22,7 @@ Route::prefix('roles')->middleware('auth:api')->controller(RoleController::class
     Route::post('/', 'create');
     Route::get('/search', 'search');
     Route::get('/{role}', 'show');
-    Route::patch('/{role}', 'update');
+    Route::put('/{role}', 'update');
     Route::delete('/{role}', 'delete');
   });
 });
@@ -33,7 +32,7 @@ Route::prefix('departments')->middleware('auth:api')->controller(DepartmentContr
     Route::get('/', 'list');
     Route::post('/', 'create');
     Route::get('/search', 'search');
-    Route::patch('/{department}', 'update');
+    Route::put('/{department}', 'update');
     Route::delete('/{department}', 'delete');
   });
   
@@ -46,7 +45,7 @@ Route::prefix('employees')->middleware(['auth:api', 'authorize:admin'])->control
     Route::post('/', 'create');
     Route::get('/search', 'search');
     Route::get('/{employee}', 'show');
-    Route::patch('/{employee}', 'update');
+    Route::put('/{employee}', 'update');
     Route::delete('/{employee}', 'delete');
 });
 
@@ -58,7 +57,7 @@ Route::prefix('attendances')->middleware('auth:api')->controller(AttendanceContr
 
   Route::get('/today', 'today');
   Route::post('/checkIn', 'checkIn');
-  Route::patch('/checkOut', 'checkOut');
+  Route::put('/checkOut', 'checkOut');
 });
 
 Route::prefix('dashboard')->middleware('auth:api')->controller(DashboardController::class)->group(function () {

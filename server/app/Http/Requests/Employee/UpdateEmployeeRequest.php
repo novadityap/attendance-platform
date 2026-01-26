@@ -37,8 +37,8 @@ class UpdateEmployeeRequest extends FormRequest
   {
     return [
       'avatar' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
-      'department_id' => 'sometimes|required|exists:departments,id',
-      'role_id' => 'sometimes|required|exists:roles,id',
+      'department_id' => 'sometimes|required|uuid|exists:departments,id',
+      'role_id' => 'sometimes|required|uuid|exists:roles,id',
       'name' => 'sometimes|required|string|max:255',
       'email' => 'sometimes|required|string|unique:employees,email,' . $this->route('employee')->id,
       'password' => 'sometimes|required|string',

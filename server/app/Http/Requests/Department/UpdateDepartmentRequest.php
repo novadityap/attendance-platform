@@ -36,7 +36,7 @@ class UpdateDepartmentRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'name' => 'sometimes|required|string|max:255',
+      'name' => 'sometimes|required|string|max:255|unique:departments,name,' . $this->route('department')->id,
       'min_check_in_time' => 'sometimes|required|date_format:H:i',
       'min_check_out_time' => 'sometimes|required|date_format:H:i',
       'max_check_in_time' => 'sometimes|required|date_format:H:i',

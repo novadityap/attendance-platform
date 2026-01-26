@@ -53,7 +53,7 @@ const departmentApi = createApi({
     updateDepartment: builder.mutation({
       query: ({ departmentId, data }) => ({
         url: `/departments/${departmentId}`,
-        method: 'PATCH',
+        method: 'PUT',
         data
       }),
       invalidatesTags: (result, error, { departmentId }) => [

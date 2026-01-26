@@ -49,7 +49,7 @@ const attendanceApi = createApi({
     checkOutAttendance: builder.mutation({
       query: () => ({
         url: '/attendances/checkOut',
-        method: 'PATCH',
+        method: 'PUT',
       }),
       invalidatesTags: [
         { type: 'Attendance', id: 'TODAY' },

@@ -77,7 +77,7 @@ const EmployeeForm = ({ id, onSuccess, onClose, isUpdate }) => {
     },
     ...(isUpdate && {
       params: [{ name: 'employeeId', value: id }],
-      file: { fieldName: 'avatar', isMultiple: false, method: 'PATCH' },
+      file: { fieldName: 'avatar', isMultiple: false, method: 'PUT' },
     }),
     onSuccess: result => {
       onSuccess();

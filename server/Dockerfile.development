@@ -2,13 +2,15 @@ FROM php:8.4-cli-alpine
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    git unzip libpq-dev \
+RUN apk add --no-cache \
+    git \
+    unzip \
+    postgresql-dev \
  && docker-php-ext-install pdo_pgsql
 
 COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist
+RUN composer install
 
 COPY . .
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

@@ -12,22 +12,22 @@ pipeline {
     stage('Prepare ENV') {
       steps {
         withCredentials([
-          file(credentialsId: 'attendance-app-client-ci', variable: 'CLIENT_ENV'),
-          file(credentialsId: 'attendance-app-server-ci', variable: 'SERVER_ENV'),
+          file(credentialsId: 'attendance-app-client-test', variable: 'CLIENT_ENV'),
+          file(credentialsId: 'attendance-app-server-test', variable: 'SERVER_ENV'),
         ]) {
           sh '''
-            cp "$CLIENT_ENV" client/.env.ci
-            cp "$SERVER_ENV" server/.env.ci
+            cp "$CLIENT_ENV" client/.env.test
+            cp "$SERVER_ENV" server/.env.test
           '''
         }
       }
     }
 
-    stage('Build & Test (CI)') {
+    stage('Build & Test') {
       steps {
         sh '''
           docker compose \
-            -f docker-compose.ci.yml \
+            -f docker-compose.test.yml \
             up \
             --build \
             --abort-on-container-exit \
@@ -50,7 +50,7 @@ pipeline {
         ]) {
           sh '''
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-            docker compose -f docker-compose.ci.yml push
+            docker compose -f docker-compose.test.yml push
           '''
         }
       }
@@ -61,7 +61,7 @@ pipeline {
     always {
       sh '''
         docker compose \
-          -f docker-compose.ci.yml \
+          -f docker-compose.test.yml \
           down \
           --remove-orphans || true
       '''

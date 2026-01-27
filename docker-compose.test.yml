@@ -3,13 +3,13 @@ services:
     image: novadityap/attendance-app-server-test
     build:
       context: ./server
-      dockerfile: Dockerfile.test
+      dockerfile: Dockerfile
+    command: php artisan migrate:fresh --seed && php artisan test
     env_file:
       - ./server/.env.test
     depends_on:
       postgres:
         condition: service_healthy
-    command: php artisan test
     networks:
       - attendance-app-test
 
@@ -17,7 +17,7 @@ services:
     image: novadityap/attendance-app-client-test
     build:
       context: ./client
-      dockerfile: Dockerfile.test
+      dockerfile: Dockerfile
     env_file:
       - ./client/.env.test
     command: npm run build

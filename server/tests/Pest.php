@@ -1,17 +1,18 @@
 <?php
 
 use App\Models\Role;
-use App\Models\Employee;
 use Firebase\JWT\JWT;
+use App\Models\Employee;
 use App\Models\Attendance;
-use App\Models\AttendanceHistory;
 use App\Models\Department;
+use Illuminate\Support\Str;
 use App\Models\RefreshToken;
 use Illuminate\Support\Carbon;
 use App\Helpers\CloudinaryHelper;
+use App\Models\AttendanceHistory;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,9 +25,12 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
+uses(RefreshDatabase::class);
+
 pest()->extend(Tests\TestCase::class)
   ->beforeEach(function () {
-    Artisan::call('migrate:refresh --seed');
+    // Artisan::call('migrate:refresh --seed');
+    $this->seed();
   })
   ->beforeEach(function () {
     test()->validUUID = Str::uuid()->toString();

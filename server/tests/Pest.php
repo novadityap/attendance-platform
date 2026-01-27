@@ -13,6 +13,7 @@ use App\Models\AttendanceHistory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 
 // pest()->extend(Tests\TestCase::class)
-//   ->beforeEach(function () {
+//   ->beforeAll(function () {
 //     Artisan::call('migrate:refresh --seed');
 //   })
 //   ->beforeEach(function () {
@@ -37,19 +38,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 //   ->in('Feature');
 
 
-uses(
-    Tests\TestCase::class,
-    RefreshDatabase::class
-)->in('Feature');
+  pest()->extend(Tests\TestCase::class)
+   ->use(DatabaseTransactions::class)
+    ->beforeEach(function () {
+        $this->seed(); 
+        $this->validUUID = Str::uuid()->toString();
+        $this->testAvatarPath = base_path('tests/uploads/avatars/test-avatar.jpg');
+    })
+    ->in('Feature');
 
-beforeEach(function () {
-    $this->seed();
-});
-
-beforeEach(function () {
-    test()->validUUID = Str::uuid()->toString();
-    test()->testAvatarPath = base_path('tests/uploads/avatars/test-avatar.jpg');
-});
 
 /*
 |--------------------------------------------------------------------------

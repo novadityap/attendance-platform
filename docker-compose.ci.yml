@@ -1,0 +1,38 @@
+services:
+  server:
+    image: novadityap/attendance-app-server-dev
+    build:
+      context: ./server
+      dockerfile: Dockerfile.development
+    env_file:
+      - ./server/.env
+    depends_on:
+      - postgres
+    networks:
+      - attendance-app
+
+  client:
+    image: novadityap/attendance-app-client-dev
+    build:
+      context: ./client
+      dockerfile: Dockerfile.development
+    env_file:
+      - ./client/.env.development
+    networks:
+      - attendance-app
+
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_PASSWORD: aditya123
+      POSTGRES_DB: attendance_app
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - attendance-app
+
+volumes:
+  pgdata:
+
+networks:
+  attendance-app:

@@ -13,7 +13,7 @@ services:
       - postgres
     restart: always
     volumes:
-      - ./server:/var/www/html
+      - ./server:/app
     networks:
       - attendance-app-dev
 

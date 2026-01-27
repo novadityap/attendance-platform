@@ -1,38 +1,36 @@
 services:
   server:
-    image: novadityap/attendance-app-server-dev
+    image: novadityap/attendance-app-server-ci
     build:
       context: ./server
-      dockerfile: Dockerfile.development
+      dockerfile: Dockerfile.ci
     env_file:
-      - ./server/.env
+      - ./server/.env.ci
     depends_on:
       - postgres
+    command: php artisan test
     networks:
-      - attendance-app
+      - attendance-app-ci
 
   client:
-    image: novadityap/attendance-app-client-dev
+    image: novadityap/attendance-app-client-ci
     build:
       context: ./client
-      dockerfile: Dockerfile.development
+      dockerfile: Dockerfile.ci
     env_file:
-      - ./client/.env.development
+      - ./client/.env.ci
+    command: npm run build
     networks:
-      - attendance-app
+      - attendance-app-ci
 
   postgres:
     image: postgres:17-alpine
     environment:
-      POSTGRES_PASSWORD: aditya123
-      POSTGRES_DB: attendance_app
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+      POSTGRES_DB: attendance_app_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     networks:
-      - attendance-app
-
-volumes:
-  pgdata:
+      - attendance-app-ci
 
 networks:
-  attendance-app:
+  attendance-app-ci:

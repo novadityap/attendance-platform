@@ -1,12 +1,7 @@
 pipeline {
   agent any
 
-  options {
-    timestamps()
-  }
-
   stages {
-
     stage('Checkout') {
       steps {
         cleanWs()
@@ -14,53 +9,34 @@ pipeline {
       }
     }
 
-    stage('Copy .env Files') {
+    stage('Prepare ENV') {
       steps {
         withCredentials([
-          file(credentialsId: 'attendance-app-client', variable: 'CLIENT_ENV'),
-          file(credentialsId: 'attendance-app-server', variable: 'SERVER_ENV'),
+          file(credentialsId: 'attendance-app-client-ci', variable: 'CLIENT_ENV'),
+          file(credentialsId: 'attendance-app-server-ci', variable: 'SERVER_ENV'),
         ]) {
           sh '''
-            cp "$CLIENT_ENV" client/.env.development
-            cp "$SERVER_ENV" server/.env
+            cp "$CLIENT_ENV" client/.env.ci
+            cp "$SERVER_ENV" server/.env.ci
           '''
         }
       }
     }
 
-    stage('Build Images') {
+    stage('Build & Test (CI)') {
       steps {
         sh '''
-          docker compose -f docker-compose.ci.yml build
+          docker compose \
+            -f docker-compose.ci.yml \
+            up \
+            --build \
+            --abort-on-container-exit \
+            --exit-code-from server
         '''
       }
     }
 
-    stage('Start Containers') {
-      steps {
-        sh '''
-          docker compose -f docker-compose.ci.yml up -d
-        '''
-      }
-    }
-
-    stage('Run Server Tests') {
-      steps {
-        sh '''
-          until docker compose -f docker-compose.ci.yml exec -T postgres \
-            sh -c "pg_isready -U postgres"; do
-            sleep 1
-          done
-
-          docker compose -f docker-compose.ci.yml exec -T server sh -c "
-            php artisan migrate:fresh --seed &&
-            php artisan test
-          "
-        '''
-      }
-    }
-
-    stage('Push Docker Images') {
+    stage('Push Images') {
       when {
         branch 'main'
       }
@@ -70,7 +46,7 @@ pipeline {
             credentialsId: 'dockerhub',
             usernameVariable: 'DOCKER_USER',
             passwordVariable: 'DOCKER_PASS',
-          ),
+          )
         ]) {
           sh '''
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
@@ -84,8 +60,9 @@ pipeline {
   post {
     always {
       sh '''
-        docker compose -f docker-compose.ci.yml down \
-          --volumes \
+        docker compose \
+          -f docker-compose.ci.yml \
+          down \
           --remove-orphans || true
       '''
       cleanWs()

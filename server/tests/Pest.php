@@ -25,18 +25,31 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 |
 */
 
-uses(RefreshDatabase::class);
 
-pest()->extend(Tests\TestCase::class)
-  ->beforeEach(function () {
-    // Artisan::call('migrate:refresh --seed');
+// pest()->extend(Tests\TestCase::class)
+//   ->beforeEach(function () {
+//     Artisan::call('migrate:refresh --seed');
+//   })
+//   ->beforeEach(function () {
+//     test()->validUUID = Str::uuid()->toString();
+//     test()->testAvatarPath = base_path('tests/uploads/avatars/test-avatar.jpg');
+//   })
+//   ->in('Feature');
+
+
+uses(
+    Tests\TestCase::class,
+    RefreshDatabase::class
+)->in('Feature');
+
+beforeEach(function () {
     $this->seed();
-  })
-  ->beforeEach(function () {
+});
+
+beforeEach(function () {
     test()->validUUID = Str::uuid()->toString();
     test()->testAvatarPath = base_path('tests/uploads/avatars/test-avatar.jpg');
-  })
-  ->in('Feature');
+});
 
 /*
 |--------------------------------------------------------------------------

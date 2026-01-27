@@ -2,6 +2,7 @@
 
 describe('GET /api/attendances/search', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
     createManyTestAttendances();
@@ -10,6 +11,7 @@ describe('GET /api/attendances/search', function () {
   afterEach(function () {
     removeAllTestAttendances();
     removeAllTestEmployees();
+    removeAllTestDepartments();
   });
 
   it('should return a list of attendances with default pagination', function () {
@@ -29,6 +31,7 @@ describe('GET /api/attendances/search', function () {
 
 describe('GET /api/attendances/today', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
     createTestAttendance();
@@ -37,6 +40,7 @@ describe('GET /api/attendances/today', function () {
   afterEach(function () {
     removeAllTestAttendances();
     removeAllTestEmployees();
+    removeAllTestDepartments();
   });
 
   it('should return a attendance', function () {
@@ -120,6 +124,7 @@ describe('PUT /api/attendances/checkOut', function () {
 
 describe('DELETE /api/attendances/{attendance}', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
     createTestAttendance();
@@ -128,6 +133,7 @@ describe('DELETE /api/attendances/{attendance}', function () {
   afterEach(function () {
     removeAllTestAttendances();
     removeAllTestEmployees();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee does not have permission', function () {

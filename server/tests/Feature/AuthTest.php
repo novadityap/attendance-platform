@@ -6,11 +6,13 @@ use App\Mail\ResetPassword;
 
 describe('POST /api/auth/signin', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
   });
 
   afterEach(function () {
     removeAllTestEmployees();
+    removeAllTestDepartments();
   });
 
   it('should return an error if input data is invalid', function () {
@@ -59,6 +61,7 @@ describe('POST /api/auth/signin', function () {
 
 describe('POST /api/auth/signout', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
@@ -66,6 +69,7 @@ describe('POST /api/auth/signout', function () {
   afterEach(function () {
     removeAllTestEmployees();
     removeAllTestRefreshTokens();
+    removeAllTestDepartments();
   });
 
   it('should return an error if refresh token is not provided', function () {
@@ -99,6 +103,7 @@ describe('POST /api/auth/signout', function () {
 
 describe('POST /api/auth/refresh-token', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
@@ -106,6 +111,7 @@ describe('POST /api/auth/refresh-token', function () {
   afterEach(function () {
     removeAllTestEmployees();
     removeAllTestRefreshTokens();
+    removeAllTestDepartments();
   });
 
   it('should return an error if refresh token is not provided', function () {
@@ -158,6 +164,7 @@ describe('POST /api/auth/request-reset-password', function () {
 
   afterEach(function () {
     removeAllTestEmployees();
+    removeAllTestDepartments();
     Mail::clearResolvedInstances();
   });
 
@@ -180,6 +187,7 @@ describe('POST /api/auth/request-reset-password', function () {
   });
 
   it('should send reset password email if employee is registered', function () {
+    createTestDepartment();
     createTestEmployee();
 
     $result = $this->postJson('/api/auth/request-reset-password', [
@@ -194,11 +202,13 @@ describe('POST /api/auth/request-reset-password', function () {
 
 describe('POST /api/auth/reset-password/{token}', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
   });
 
   afterEach(function () {
     removeAllTestEmployees();
+    removeAllTestDepartments();
   });
 
   it('should return an error if input data is invalid', function () {

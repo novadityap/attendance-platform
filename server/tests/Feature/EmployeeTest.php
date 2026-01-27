@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Storage;
 
 describe('GET /api/employees/search', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
     createManyTestEmployees();
@@ -12,6 +13,7 @@ describe('GET /api/employees/search', function () {
 
   afterEach(function () {
     removeAllTestEmployees();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee does not have permission', function () {
@@ -61,21 +63,25 @@ describe('GET /api/employees/search', function () {
 
 describe('GET /api/employees/{employeeId}', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
 
   afterEach(function () {
     removeAllTestEmployees();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee is not owned by current employee', function () {
     $role = getTestRole('employee');
+    $department = getTestDepartment();
 
     $otherEmployee = createTestEmployee([
       'name' => 'test1',
       'email' => 'test1@me.com',
       'role_id' => $role->id,
+      'department_id' => $department->id
     ]);
 
     updateTestEmployee([
@@ -115,12 +121,14 @@ describe('GET /api/employees/{employeeId}', function () {
 
 describe('POST /api/employees', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
 
   afterEach(function () {
     removeAllTestEmployees();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee does not have permission', function () {
@@ -169,7 +177,7 @@ describe('POST /api/employees', function () {
     ]);
 
     $role = getTestRole('admin');
-    $department = getTestDepartment('IT');
+    $department = getTestDepartment();
 
     $result = $this->postJson('/api/employees', [
       'name' => 'test1',
@@ -224,17 +232,19 @@ describe('POST /api/employees', function () {
 
 describe('PUT /api/employees/{employeeId}', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
 
   afterEach(function () {
     removeAllTestEmployees();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee is not owned by current employee', function () {
     $role = getTestRole('employee');
-    $department = getTestDepartment('IT');
+    $department = getTestDepartment();
     $otherEmployee = createTestEmployee([
       'name' => 'test1',
       'email' => 'test1@me.com',
@@ -303,7 +313,7 @@ describe('PUT /api/employees/{employeeId}', function () {
     ]);
 
     $role = getTestRole('admin');
-    $department = getTestDepartment('IT');
+    $department = getTestDepartment();
     $employee = getTestEmployee();
 
     $result = $this->putJson("/api/employees/{$employee->id}", [
@@ -343,20 +353,24 @@ describe('PUT /api/employees/{employeeId}', function () {
 
 describe('DELETE /api/employees/{employeeId}', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
 
   afterEach(function () {
     removeAllTestEmployees();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee is not owned by current employee', function () {
     $role = getTestRole('employee');
+    $department = getTestDepartment();
     $otherEmployee = createTestEmployee([
       'name' => 'test1',
       'email' => 'test1@me.com',
       'role_id' => $role->id,
+      'department_id' => $department->id
     ]);
 
     updateTestEmployee(['role_id' => $role->id]);

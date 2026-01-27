@@ -2,6 +2,7 @@
 
 describe('GET /api/dashboard', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
@@ -29,6 +30,7 @@ describe('GET /api/dashboard', function () {
     createManyTestDepartments();
     createManyTestRoles();
     createManyTestEmployees();
+    createTestDepartment();
     createTestEmployee();
     createManyTestAttendances();
 

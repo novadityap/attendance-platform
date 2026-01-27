@@ -2,6 +2,7 @@
 
 describe('GET /api/departments', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
@@ -39,6 +40,7 @@ describe('GET /api/departments', function () {
 
 describe('GET /api/departments/search', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
     createManyTestDepartments();
@@ -94,6 +96,7 @@ describe('GET /api/departments/search', function () {
 
 describe('GET /api/departments/{departmentId}', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
@@ -128,6 +131,7 @@ describe('GET /api/departments/{departmentId}', function () {
 
 describe('POST /api/departments', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
@@ -177,27 +181,27 @@ describe('POST /api/departments', function () {
     expect($result->json('errors.name'))->toBeArray();
   });
 
-  it('should create a department if input data is valid', function () {
-    $result = $this->postJson('/api/departments', [
-      'name' => 'test',
-      'minCheckInTime' => '08:00',
-      'minCheckOutTime' => '15:00',
-      'maxCheckInTime' => '10:00',
-      'maxCheckOutTime' => '18:00'
-    ], [
-      'Authorization' => 'Bearer ' . test()->accessToken,
-    ]);
+    it('should create a department if input data is valid', function () {
+      $result = $this->postJson('/api/departments', [
+        'name' => 'test1',
+        'minCheckInTime' => '08:00',
+        'minCheckOutTime' => '15:00',
+        'maxCheckInTime' => '10:00',
+        'maxCheckOutTime' => '18:00'
+      ], [
+        'Authorization' => 'Bearer ' . test()->accessToken,
+      ]);
 
-    expect($result->status())->toBe(201);
-    expect($result->json('message'))->toBe('Department created successfully');
-  });
+      expect($result->status())->toBe(201);
+      expect($result->json('message'))->toBe('Department created successfully');
+    });
 });
 
 describe('PUT /api/departments/{departmentId}', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
-    createTestDepartment();
   });
 
   afterEach(function () {
@@ -261,9 +265,9 @@ describe('PUT /api/departments/{departmentId}', function () {
 
 describe('DELETE /api/departments/{departmentId}', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
-    createTestDepartment();
   });
 
   afterEach(function () {

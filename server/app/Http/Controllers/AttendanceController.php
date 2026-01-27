@@ -90,11 +90,16 @@ class AttendanceController extends Controller
 
     abort_if($attendance, 409, 'Already checked in today');
 
-    abort_if(
-      now('Asia/Jakarta')->format('H:i') < $employee->department->min_check_in_time,
-      403,
-      "Minimum check in time is {$employee->department->min_check_in_time}"
-    );
+    $now = now('Asia/Jakarta');
+
+    $minCheckIn = Carbon::createFromFormat(
+      'H:i',
+      $employee->department->min_check_in_time,
+      'Asia/Jakarta'
+    )->setDate($now->year, $now->month, $now->day);
+
+    abort_if($now->lt($minCheckIn), 403, "Minimum check in time is {$employee->department->min_check_in_time}");
+
 
     $attendance = Attendance::create([
       'employee_id' => $employee->id,
@@ -134,11 +139,15 @@ class AttendanceController extends Controller
       'Already checked out today'
     );
 
-    abort_if(
-      now('Asia/Jakarta')->format('H:i') < $employee->department->min_check_out_time,
-      403,
-      "Minimum check out time is {$employee->department->min_check_out_time}"
-    );
+    $now = now('Asia/Jakarta');
+
+    $minCheckOut = Carbon::createFromFormat(
+      'H:i',
+      $employee->department->min_check_out_time,
+      'Asia/Jakarta'
+    )->setDate($now->year, $now->month, $now->day);
+
+    abort_if($now->lt($minCheckOut), 403, "Minimum check out time is {$employee->department->min_check_out_time}");
 
     $attendance->update([
       'check_out' => now(),

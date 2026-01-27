@@ -2,6 +2,7 @@
 
 describe('GET /api/roles', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
@@ -9,6 +10,7 @@ describe('GET /api/roles', function () {
   afterEach(function () {
     removeAllTestEmployees();
     removeAllTestRoles();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee does not have permission', function () {
@@ -39,6 +41,7 @@ describe('GET /api/roles', function () {
 
 describe('GET /api/roles/search', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
     createManyTestRoles();
@@ -47,6 +50,7 @@ describe('GET /api/roles/search', function () {
   afterEach(function () {
     removeAllTestEmployees();
     removeAllTestRoles();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee does not have permission', function () {
@@ -94,6 +98,7 @@ describe('GET /api/roles/search', function () {
 
 describe('GET /api/roles/{roleId}', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
@@ -101,6 +106,7 @@ describe('GET /api/roles/{roleId}', function () {
   afterEach(function () {
     removeAllTestEmployees();
     removeAllTestRoles();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee does not have permission', function () {
@@ -141,6 +147,7 @@ describe('GET /api/roles/{roleId}', function () {
 
 describe('POST /api/roles', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
   });
@@ -148,6 +155,7 @@ describe('POST /api/roles', function () {
   afterEach(function () {
     removeAllTestEmployees();
     removeAllTestRoles();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee does not have permission', function () {
@@ -204,6 +212,7 @@ describe('POST /api/roles', function () {
 
 describe('PUT /api/roles/{roleId}', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
     createTestRole();
@@ -212,6 +221,7 @@ describe('PUT /api/roles/{roleId}', function () {
   afterEach(function () {
     removeAllTestEmployees();
     removeAllTestRoles();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee does not have permission', function () {
@@ -269,6 +279,7 @@ describe('PUT /api/roles/{roleId}', function () {
 
 describe('DELETE /api/roles/{roleId}', function () {
   beforeEach(function () {
+    createTestDepartment();
     createTestEmployee();
     createAccessToken();
     createTestRole();
@@ -277,6 +288,7 @@ describe('DELETE /api/roles/{roleId}', function () {
   afterEach(function () {
     removeAllTestEmployees();
     removeAllTestRoles();
+    removeAllTestDepartments();
   });
 
   it('should return an error if employee does not have permission', function () {

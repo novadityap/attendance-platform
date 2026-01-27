@@ -103,7 +103,7 @@ function getTestEmployee(string $name = 'test'): ?Employee
 function createTestEmployee(array $fields = []): Employee
 {
   $role = getTestRole('admin');
-  $department = getTestDepartment('IT');
+  $department = getTestDepartment();
 
   return Employee::create(array_merge([
     'name' => 'test',
@@ -150,28 +150,28 @@ function getTestDepartment(string $name = 'test'): ?Department
 
 function createTestDepartment(array $fields = []): Department
 {
-  $now = Carbon::now();
+  $now = Carbon::now('Asia/Jakarta');
 
   return Department::create(array_merge([
     'name' => 'test',
-    'min_check_in_time' => $now->copy()->subHour()->format('H:i:s'),
-    'min_check_out_time' => $now->copy()->addHours(7)->format('H:i:s'),
-    'max_check_in_time' => $now->copy()->addHour()->format('H:i:s'),
-    'max_check_out_time' => $now->copy()->addHours(8)->format('H:i:s'),
+    'min_check_in_time' => $now->copy()->subMinute()->format('H:i'),
+    'min_check_out_time' => $now->copy()->subMinute()->format('H:i'),
+    'max_check_in_time' => $now->copy()->addHours(8)->format('H:i'),
+    'max_check_out_time' => $now->copy()->addHours(8)->format('H:i'),
   ], $fields));
 }
 
 function createManyTestDepartments(): void
 {
-  $now = Carbon::now();
+  $now = Carbon::now('Asia/Jakarta');
 
   foreach (range(0, 14) as $i) {
     Department::create([
       'name' => "test{$i}",
-       'min_check_in_time' => $now->copy()->subHour()->format('H:i:s'),
-      'min_check_out_time' => $now->copy()->addHours(7)->format('H:i:s'),
-    'max_check_in_time' => $now->copy()->addHour()->format('H:i:s'),
-    'max_check_out_time' => $now->copy()->addHours(8)->format('H:i:s'),
+      'min_check_in_time' => $now->copy()->subMinute()->format('H:i'),
+      'min_check_out_time' => $now->copy()->subMinute()->format('H:i'),
+      'max_check_in_time' => $now->copy()->addHours(8)->format('H:i'),
+      'max_check_out_time' => $now->copy()->addHours(8)->format('H:i'),
     ]);
   }
 }

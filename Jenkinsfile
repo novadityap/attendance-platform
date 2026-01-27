@@ -48,9 +48,9 @@ pipeline {
       }
     }
 
-    stage('Build Production Images') {
+    stage('Build Images') {
       steps {
-        sh 'docker compose -f docker-compose.production.yml build'
+        sh 'docker compose -f docker-compose.development.yml build'
       }
     }
 
@@ -65,7 +65,7 @@ pipeline {
         ]) {
           sh '''
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-            docker compose -f docker-compose.production.yml push
+            docker compose -f docker-compose.development.yml push
           '''
         }
       }

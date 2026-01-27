@@ -12,12 +12,12 @@ pipeline {
     stage('Copy .env Files') {
       steps {
         withCredentials([
-          file(credentialsId: 'attendance-app-client-dev-env', variable: 'CLIENT_DEV_ENV'),
-          file(credentialsId: 'attendance-app-server-dev-env', variable: 'SERVER_DEV_ENV'),
+          file(credentialsId: 'attendance-app-client', variable: 'CLIENT_ENV'),
+          file(credentialsId: 'attendance-app-server', variable: 'SERVER_ENV'),
         ]) {
           sh '''
-            cp "$CLIENT_DEV_ENV" client/.env.development
-            cp "$SERVER_DEV_ENV" server/.env
+            cp "$CLIENT_ENV" client/.env.development
+            cp "$SERVER_ENV" server/.env
           '''
         }
       }

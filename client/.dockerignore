@@ -1,10 +1,5 @@
 node_modules
-.env.development
-.env.local
-.env.test
-.env.development.local
-.env.production.local
-.env.test.local
+.env*
 
 vercel
 vercel.env.production

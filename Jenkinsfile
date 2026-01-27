@@ -15,8 +15,8 @@ pipeline {
           file(credentialsId: 'attendance-app-server-test', variable: 'SERVER_ENV'),
         ]) {
           sh '''
-            cp "$CLIENT_ENV" client/.env.test
-            cp "$SERVER_ENV" server/.env.test
+            cp "$CLIENT_ENV" client/.env.testing
+            cp "$SERVER_ENV" server/.env.testing
           '''
         }
       }

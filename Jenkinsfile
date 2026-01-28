@@ -8,32 +8,26 @@ pipeline {
       }
     }
 
-    stage('Prepare ENV') {
+    stage('Build & Test') {
       steps {
         withCredentials([
           file(credentialsId: 'attendance-app-client-test', variable: 'CLIENT_ENV'),
           file(credentialsId: 'attendance-app-server-test', variable: 'SERVER_ENV'),
         ]) {
           sh '''
-            cp "$CLIENT_ENV" client/.env
-            cp "$SERVER_ENV" server/.env
+            docker compose \
+              --env-file "$SERVER_ENV" \
+              --env-file "$CLIENT_ENV" \
+              -f docker-compose.test.yml \
+              up \
+              --build \
+              --abort-on-container-exit \
+              --exit-code-from server
           '''
         }
       }
     }
 
-    stage('Build & Test') {
-      steps {
-        sh '''
-          docker compose \
-            -f docker-compose.test.yml \
-            up \
-            --build \
-            --abort-on-container-exit \
-            --exit-code-from server
-        '''
-      }
-    }
 
     stage('Push Images') {
       steps {

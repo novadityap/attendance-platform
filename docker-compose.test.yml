@@ -5,8 +5,6 @@ services:
       context: ./server
       dockerfile: Dockerfile
     command: sh -c "php artisan migrate:fresh --seed && php artisan test"
-    env_file:
-      - ./server/.env
     depends_on:
       postgres:
         condition: service_healthy
@@ -18,8 +16,6 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    env_file:
-      - ./client/.env
     command: npm run build
     networks:
       - attendance-app-test

@@ -25,6 +25,8 @@ services:
       - ./client/.env:/app/.env
     env_file:
       - ./client/.env
+    depends_on:
+      - server
     networks:
       - attendance-app-test
 

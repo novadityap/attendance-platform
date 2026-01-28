@@ -28,7 +28,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 
   pest()->extend(Tests\TestCase::class)
-    ->use(DatabaseTransactions::class)
+    // ->use(DatabaseTransactions::class)
     ->use(RefreshDatabase::class)
     ->beforeEach(function () {
         $this->seed(); 

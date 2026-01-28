@@ -4,7 +4,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    command: sh -c "php artisan migrate:fresh --seed --force && ./vendor/bin/pest --display-warnings --show-trace"
+    command: sh -c "php artisan migrate:fresh --seed --force && ./vendor/bin/pest --display-warnings"
     env_file:
       - ./server/.env
     depends_on:

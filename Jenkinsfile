@@ -17,14 +17,13 @@ pipeline {
         ]) {
           sh '''
             cp "$CLIENT_ENV" client/.env 
-            cp "$SERVER_ENV" server/.env 
+                cp "$SERVER_ENV" server/.env 
 
-            docker compose \
-              -f docker-compose.test.yml ./vendor/bin/pest --display-warnings \
-              up \
-              --build \
-              --abort-on-container-exit \
-              --exit-code-from server
+                docker compose -f docker-compose.test.yml build
+
+                docker compose -f docker-compose.test.yml up -d postgres
+
+                docker compose -f docker-compose.test.yml run --rm server ./vendor/bin/pest --display-warnings
           '''
         }
       }

@@ -27,19 +27,9 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 */
 
 
-// pest()->extend(Tests\TestCase::class)
-//   ->beforeAll(function () {
-//     Artisan::call('migrate:refresh --seed');
-//   })
-//   ->beforeEach(function () {
-//     test()->validUUID = Str::uuid()->toString();
-//     test()->testAvatarPath = base_path('tests/uploads/avatars/test-avatar.jpg');
-//   })
-//   ->in('Feature');
-
-
   pest()->extend(Tests\TestCase::class)
-   ->use(DatabaseTransactions::class)
+    ->use(DatabaseTransactions::class)
+    ->use(RefreshDatabase::class)
     ->beforeEach(function () {
         $this->seed(); 
         $this->validUUID = Str::uuid()->toString();

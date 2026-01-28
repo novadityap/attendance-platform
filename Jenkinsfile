@@ -19,6 +19,10 @@ pipeline {
             cp "$CLIENT_ENV" client/.env 
             cp "$SERVER_ENV" server/.env 
 
+            echo "Checking files..."
+            ls -la client/.env
+            ls -la server/.env
+
             docker compose \
               -f docker-compose.test.yml \
               up \

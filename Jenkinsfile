@@ -20,7 +20,7 @@ pipeline {
             cp "$SERVER_ENV" server/.env 
 
             docker compose \
-              -f docker-compose.test.yml \
+              -f docker-compose.test.yml ./vendor/bin/pest --display-warnings \
               up \
               --build \
               --abort-on-container-exit \

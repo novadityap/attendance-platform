@@ -61,7 +61,6 @@ pipeline {
           down \
           --remove-orphans || true
       '''
-      cleanWs()
     }
   }
 }

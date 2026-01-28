@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     command: sh -c "php artisan migrate:fresh --seed --force && php artisan test"
     env_file:
-      - ./server/.env
+      # - ./server/.env
     depends_on:
       postgres:
         condition: service_healthy

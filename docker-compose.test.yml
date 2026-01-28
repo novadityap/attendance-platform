@@ -5,6 +5,8 @@ services:
       context: ./server
       dockerfile: Dockerfile
     command: sh -c "php artisan migrate:fresh --seed --force && php artisan test --bail  --display-warnings"
+    dns:
+      - 8.8.8.8
     volumes:
       - ./server/.env:/app/.env
     env_file:

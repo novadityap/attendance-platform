@@ -4,9 +4,9 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    command: sh -c "php artisan migrate:fresh --seed --force && ./vendor/bin/pest --display-warnings"
-    env_file:
-      - ./server/.env
+    command: sh -c "php artisan migrate:fresh --seed --force && php artisan test"
+    volumes:
+      - ./server/.env:/app/.env
     depends_on:
       postgres:
         condition: service_healthy
@@ -19,8 +19,8 @@ services:
       context: ./client
       dockerfile: Dockerfile
     command: npm run build
-    env_file:
-      - ./client/.env
+    volumes:
+      - ./client/.env:/app/.env
     networks:
       - attendance-app-test
 

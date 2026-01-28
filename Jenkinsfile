@@ -35,7 +35,7 @@ pipeline {
       steps {
         withCredentials([
           usernamePassword(
-            credentialsId: 'github-pat',
+            credentialsId: 'docker-pat',
             usernameVariable: 'DOCKER_USER',
             passwordVariable: 'DOCKER_PASS',
           )

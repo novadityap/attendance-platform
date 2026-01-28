@@ -18,7 +18,6 @@
         </include>
     </source>
     <php>
-        <ini name="error_reporting" value="E_ALL &amp; ~E_NOTICE &amp; ~E_DEPRECATED"/>
         <!-- <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>

@@ -4,13 +4,9 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    command: sh -c "php artisan migrate:fresh --seed --force && php artisan test --bail  --display-warnings"
-    dns:
-      - 8.8.8.8
+    command: sh -c "php artisan migrate:fresh --seed --force && php artisan test"
     volumes:
       - ./server/.env:/app/.env
-    env_file:
-      - ./server/.env
     depends_on:
       postgres:
         condition: service_healthy
@@ -23,8 +19,6 @@ services:
       context: ./client
       dockerfile: Dockerfile
     command: npm run build
-    env_file:
-      - ./client/.env
     volumes:
       - ./client/.env:/app/.env
     networks:

@@ -49,33 +49,8 @@ pipeline {
     }
   }
 
-  // post {
-  //   always {
-  //     sh '''
-  //       docker compose \
-  //         -f docker-compose.test.yml \
-  //         down \
-  //         --remove-orphans || true
-  //     '''
-  //   }
-  // }
-
-
-
   post {
     always {
-      // 1. Kita ambil log Laravel dari dalam container server sebelum dimatikan
-      // Kita gunakan 'docker compose exec' atau 'docker cp'
-      sh '''
-        echo "=== DEBUG: Menampilkan Laravel Log ==="
-        docker compose -f docker-compose.test.yml logs server | tail -n 50
-        
-        # Opsi lain: Jika ingin melihat isi file log spesifik di dalam container
-        docker compose -f docker-compose.test.yml exec -T server cat storage/logs/laravel.log || echo "File log tidak ditemukan"
-        echo "======================================"
-      '''
-
-      // 2. Baru setelah itu kita bersihkan
       sh '''
         docker compose \
           -f docker-compose.test.yml \

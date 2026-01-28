@@ -15,8 +15,9 @@ pipeline {
           file(credentialsId: 'attendance-app-server-test', variable: 'SERVER_ENV'),
         ]) {
           sh '''
-            cp "$CLIENT_ENV" client/.env \
-            cp "$SERVER_ENV" server/.env \
+            cp "$CLIENT_ENV" client/.env 
+            cp "$SERVER_ENV" server/.env 
+            
             docker compose \
               -f docker-compose.test.yml \
               up \

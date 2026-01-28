@@ -30,9 +30,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
   pest()->extend(Tests\TestCase::class)
     ->use(DatabaseTransactions::class)
     ->beforeEach(function () {
-        $this->seed(); 
         $this->validUUID = Str::uuid()->toString();
-        $this->testAvatarPath = base_path('tests/uploads/avatars/test-avatar.jpg');
     })
     ->in('Feature');
 
@@ -260,33 +258,3 @@ function createAccessToken(): void
   test()->accessToken = $token;
 }
 
-function checkFileExists(string|array $url): bool
-{
-  try {
-    $urls = is_array($url) ? $url : [$url];
-
-    foreach ($urls as $url) {
-      $publicId = CloudinaryHelper::extractPublicId($url);
-
-      if (!$publicId)
-        return false;
-
-      if (!Storage::exists($publicId))
-        return false;
-    }
-
-    return true;
-
-  } catch (\Exception $e) {
-    return false;
-  }
-}
-
-function removeTestFile(string|array $url): void
-{
-  $urls = is_array($url) ? $url : [$url];
-
-  foreach ($urls as $url) {
-    Storage::delete(CloudinaryHelper::extractPublicId($url));
-  }
-}

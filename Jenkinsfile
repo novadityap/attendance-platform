@@ -9,8 +9,8 @@ pipeline {
     stage('Build & Test') {
       steps {
         withCredentials([
-          file(credentialsId: 'attendance-app-client-test', variable: 'CLIENT_ENV'),
-          file(credentialsId: 'attendance-app-server-test', variable: 'SERVER_ENV'),
+          file(credentialsId: 'attendance-app-client', variable: 'CLIENT_ENV'),
+          file(credentialsId: 'attendance-app-server', variable: 'SERVER_ENV'),
         ]) {
           sh '''
             cp "$CLIENT_ENV" client/.env 
@@ -32,7 +32,7 @@ pipeline {
       steps {
         withCredentials([
           usernamePassword(
-            credentialsId: 'dockerhub',
+            credentialsId: 'github-pat',
             usernameVariable: 'DOCKER_USER',
             passwordVariable: 'DOCKER_PASS',
           )

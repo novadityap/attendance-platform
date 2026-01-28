@@ -4,7 +4,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    command: sh -c "php artisan migrate:fresh --seed --force && php artisan test"
+    command: sh -c "php artisan migrate:fresh --seed --force --verbose && php artisan test --verbose"
     env_file:
       - ./server/.env
     depends_on:

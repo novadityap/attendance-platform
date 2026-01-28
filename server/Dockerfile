@@ -15,7 +15,6 @@ RUN composer install \
     --prefer-dist \
     --no-interaction \
     --no-progress \
-    --optimize-autoloader=false
 
 COPY . .
 

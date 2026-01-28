@@ -7,9 +7,13 @@ RUN apk add --no-cache \
     unzip \
  && docker-php-ext-install pdo_pgsql
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+COPY composer.json composer.lock ./
+
+RUN composer install --no-dev --no-scripts --no-autoloader
 
 COPY . .
-RUN composer install \
-    --no-interaction \
-    --no-scripts
+
+RUN composer dump-autoload --optimize --no-scripts
+

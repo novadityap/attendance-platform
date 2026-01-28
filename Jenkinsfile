@@ -1,10 +1,6 @@
 pipeline {
   agent any
 
-  options {
-    skipDefaultCheckout(true)
-  }
-
   stages {
     stage('Build & Test') {
       steps {
@@ -17,15 +13,11 @@ pipeline {
             cp "$SERVER_ENV" server/.env 
 
             docker compose \
-  -f docker-compose.test.yml \
-  build --no-cache
-
-docker compose \
-  -f docker-compose.test.yml \
-  up \
-  --abort-on-container-exit \
-  --exit-code-from server
-
+              -f docker-compose.test.yml \
+              up \
+              --build \
+              --abort-on-container-exit \
+              --exit-code-from server
           '''
         }
       }

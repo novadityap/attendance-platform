@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     command: sh -c "printenv APP_ENV && ls -l /app/.env* && php artisan migrate:fresh --seed && php artisan test --debug"
     env_file:
-      - ./server/.env.testing
+      - ./server/.env
     depends_on:
       postgres:
         condition: service_healthy
@@ -19,7 +19,7 @@ services:
       context: ./client
       dockerfile: Dockerfile
     env_file:
-      - ./client/.env.testing
+      - ./client/.env
     command: npm run build
     networks:
       - attendance-app-test

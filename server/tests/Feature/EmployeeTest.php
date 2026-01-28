@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-
 describe('GET /api/employees/search', function () {
   beforeEach(function () {
     createTestDepartment();

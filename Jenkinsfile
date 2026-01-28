@@ -21,10 +21,6 @@ pipeline {
 
             chmod 644 client/.env server/.env
 
-            echo "--- DEBUG ENV CONTENT ---"
-            grep DB_ server/.env
-            echo "--- END DEBUG ---"
-
             docker compose -f docker-compose.test.yml build
 
             docker compose -f docker-compose.test.yml up \

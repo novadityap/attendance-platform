@@ -28,8 +28,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 
   pest()->extend(Tests\TestCase::class)
-    // ->use(DatabaseTransactions::class)
-    ->use(RefreshDatabase::class)
+    ->use(DatabaseTransactions::class)
     ->beforeEach(function () {
         $this->seed(); 
         $this->validUUID = Str::uuid()->toString();

@@ -26,6 +26,14 @@ class UpdateEmployeeRequest extends FormRequest
         $this->merge([$to => $this->get($from)]);
       }
     }
+
+    $fields = ['password', 'avatar'];
+
+    foreach ($fields as $field) {
+        if ($this->has($field) && ($this->{$field} === null || $this->{$field} === '')) {
+            $this->request->remove($field);
+        }
+    }
   }
 
   /**
@@ -41,7 +49,8 @@ class UpdateEmployeeRequest extends FormRequest
       'role_id' => 'sometimes|required|uuid|exists:roles,id',
       'name' => 'sometimes|required|string|max:255',
       'email' => 'sometimes|required|string|unique:employees,email,' . $this->route('employee')->id,
-      'password' => 'sometimes|required|string',
+      'password' => 'sometimes|required|string|min:6',
     ];
   }
+
 }

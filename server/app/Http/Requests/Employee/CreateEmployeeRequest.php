@@ -34,7 +34,7 @@ class CreateEmployeeRequest extends FormRequest
       'role_id' => 'required|uuid|exists:roles,id',
       'name' => 'required|string|max:255',
       'email' => 'required|string|email|unique:employees,email',
-      'password' => 'required|string',
+      'password' => 'required|string|min:6',
     ];
   }
 }

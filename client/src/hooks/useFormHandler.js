@@ -27,13 +27,22 @@ const buildFormData = ({ data, fieldName, isMultiple, method }) => {
   for (const key in data) {
     const value = data[key];
 
-    if (isMultiple === true && key === fieldName) {
-      for (let i = 0; i < value.length; i++) {
-        const file = value[i];
-        formData.append(key + '[]', file);
+    if (key === fieldName) {
+      if (isMultiple === true && Array.isArray(value)) {
+        for (let i = 0; i < value.length; i++) {
+          if (value[i] instanceof File) {
+            formData.append(key + '[]', value[i]);
+          }
+        }
+      } else {
+        if (value instanceof File) {
+          formData.append(key, value);
+        }
       }
     } else {
-      formData.append(key, value);
+      if (value !== null && value !== undefined) {
+        formData.append(key, value);
+      }
     }
   }
 

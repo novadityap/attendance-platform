@@ -125,5 +125,5 @@ return [
 
     'default_avatar_url' => env('DEFAULT_AVATAR_URL'),
 
-
+    'client_url' => env('CLIENT_URL'),
 ];

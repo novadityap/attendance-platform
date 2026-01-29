@@ -128,11 +128,11 @@ const CheckIn = () => {
                   <TbClock className="size-5" />
                 </span>
                 <p className="text-sm font-semibold text-gray-800">
-                  Max Check In
+                  Min Check In
                 </p>
               </div>
               <span className="text-sm font-bold text-gray-900">
-                {department?.data?.maxCheckInTime}
+                {department?.data?.minCheckInTime}
               </span>
             </div>
             <div className="flex items-center justify-between bg-white/70 p-4 rounded-xl border shadow-sm hover:shadow-md transition-all">
@@ -141,11 +141,11 @@ const CheckIn = () => {
                   <TbClock className="size-5" />
                 </span>
                 <p className="text-sm font-semibold text-gray-800">
-                  Max Check Out
+                  Max Check In
                 </p>
               </div>
               <span className="text-sm font-bold text-gray-900">
-                {department?.data?.maxCheckOutTime}
+                {department?.data?.maxCheckInTime}
               </span>
             </div>
           </div>

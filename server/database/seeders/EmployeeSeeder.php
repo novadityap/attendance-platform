@@ -22,7 +22,7 @@ class EmployeeSeeder extends Seeder
       'name' => 'user',
       'email' => 'user@email.com',
       'password' => 'user123',
-      'role_id' => Role::where('name', 'employee')->first()->id
+      'role_id' => Role::where('name', 'user')->first()->id
     ]);
 
     Employee::create([

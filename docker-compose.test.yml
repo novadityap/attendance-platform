@@ -5,7 +5,7 @@ services:
       context: ./server
       dockerfile: Dockerfile
     # command: sh -c "php artisan config:clear && php artisan storage:link && php artisan migrate:fresh --seed --force && php artisan test"
-    command: command: sh -c "php artisan migrate:fresh --seed --force && php -d error_reporting=0 artisan test --do-not-cache-result"
+    command: sh -c "php artisan migrate:fresh --seed --force && php -d error_reporting=0 artisan test --do-not-cache-result"
     volumes:
       - ./server/.env:/app/.env
     env_file:

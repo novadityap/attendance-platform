@@ -19,9 +19,9 @@ class EmployeeSeeder extends Seeder
     Employee::create([
       'id' => Str::uuid(),
       'department_id' => Department::where('name', 'IT')->first()->id,
-      'name' => 'employee',
-      'email' => 'employee@email.com',
-      'password' => 'employee123',
+      'name' => 'user',
+      'email' => 'user@email.com',
+      'password' => 'user123',
       'role_id' => Role::where('name', 'employee')->first()->id
     ]);
 

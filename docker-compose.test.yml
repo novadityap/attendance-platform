@@ -11,7 +11,7 @@ services:
       chmod -R 777 storage bootstrap/cache &&
       php artisan config:clear &&
       php artisan migrate:fresh --seed --force &&
-      php artisan test --display-warnings=no --display-notices=no --display-deprecations=no"
+      php artisan test --without-reproducers --do-not-cache-result"
     volumes:
       - ./server/.env:/app/.env
     env_file:

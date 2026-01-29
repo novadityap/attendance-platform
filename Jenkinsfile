@@ -19,7 +19,7 @@ pipeline {
             cp "$CLIENT_ENV" client/.env 
             cp "$SERVER_ENV" server/.env 
 
-            docker compose -f docker-compose.test.yml up -d --build \
+            docker compose -f docker-compose.test.yml up --build \
               --abort-on-container-exit \
               --exit-code-from server
           '''

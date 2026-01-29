@@ -2,13 +2,6 @@ pipeline {
   agent any
 
   stages {
-    stage('Checkout') {
-      steps {
-        cleanWs() 
-        checkout scm
-      }
-    }
-
     stage('Build & Test') {
       steps {
         withCredentials([
@@ -19,11 +12,7 @@ pipeline {
             cp "$CLIENT_ENV" client/.env 
             cp "$SERVER_ENV" server/.env 
 
-            chmod 644 client/.env server/.env
-
-            docker compose -f docker-compose.test.yml build
-
-            docker compose -f docker-compose.test.yml up \
+            docker compose -f docker-compose.test.yml up --build \
               --abort-on-container-exit \
               --exit-code-from server
           '''

@@ -1,8 +1,53 @@
-node_modules
+# =========================
+# Environment & Secrets
+# =========================
 .env
 .env.*
+
+# =========================
+# Dependency (Host-only)
+# =========================
+node_modules
+vendor
+
+# =========================
+# Logs & Coverage
+# =========================
+*.log
 logs
 coverage
+
+# =========================
+# Build Artifacts
+# =========================
 dist
 build
-vendor
+public/build
+public/hot
+
+# =========================
+# Cache & Runtime
+# =========================
+storage/logs
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+bootstrap/cache
+
+# =========================
+# VCS & Editor
+# =========================
+.git
+.gitignore
+
+.idea
+.vscode
+.fleet
+.zed
+.nova
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db

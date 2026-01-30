@@ -9,29 +9,22 @@ pipeline {
       }
     }
 
-    stage('Build & Test API') {
-        steps {
-            withCredentials([
-                file(credentialsId: 'attendance-app-client', variable: 'CLIENT_ENV'),
-                file(credentialsId: 'attendance-app-server', variable: 'SERVER_ENV'),
-            ]) {
-                sh '''
-                    cp "$CLIENT_ENV" client/.env 
-                    cp "$SERVER_ENV" server/.env 
+    stage('Build & Test') {
+      steps {
+        withCredentials([
+          file(credentialsId: 'attendance-app-client', variable: 'CLIENT_ENV'),
+          file(credentialsId: 'attendance-app-server', variable: 'SERVER_ENV'),
+        ]) {
+          sh '''
+            cp "$CLIENT_ENV" client/.env 
+            cp "$SERVER_ENV" server/.env 
 
-                    docker compose -f docker-compose.test.yml up --build \
-                        --abort-on-container-exit \
-                        --exit-code-from server \
-                        server postgres
-                '''
-            }
+            docker compose -f docker-compose.test.yml up --build \
+              --abort-on-container-exit \
+              --exit-code-from server
+          '''
         }
-    }
-
-    stage('Build Frontend Client') {
-        steps {
-            sh 'docker compose -f docker-compose.test.yml build client'
-        }
+      }
     }
 
 

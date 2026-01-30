@@ -21,19 +21,20 @@ services:
       context: ./client
       dockerfile: Dockerfile
     command: npm run build
+    depends_on:
+      server:
+        condition: service_completed_successfully
     volumes:
       - ./client/.env:/app/.env
     env_file:
       - ./client/.env
-    depends_on:
-      - server
     networks:
       - attendance-app-test
 
   postgres:
     image: postgres:17-alpine
     environment:
-      POSTGRES_DB: attendance_app_test
+      POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     healthcheck:

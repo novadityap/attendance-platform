@@ -15,6 +15,8 @@ services:
     restart: always
     volumes:
       - ./server:/app
+      - /app/vendor      
+      - /app/bootstrap/cache
     networks:
       - attendance-app-dev
 

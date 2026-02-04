@@ -12,8 +12,8 @@ pipeline {
     stage('Build & Test') {
       steps {
         withCredentials([
-          file(credentialsId: 'attendance-app-client', variable: 'CLIENT_ENV'),
-          file(credentialsId: 'attendance-app-server', variable: 'SERVER_ENV'),
+          file(credentialsId: 'attendance-platform-client', variable: 'CLIENT_ENV'),
+          file(credentialsId: 'attendance-platform-server', variable: 'SERVER_ENV'),
         ]) {
           sh '''
             cp "$CLIENT_ENV" client/.env 

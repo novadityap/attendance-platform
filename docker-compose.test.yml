@@ -1,6 +1,6 @@
 services:
   server:
-    image: novadityap/attendance-app-server-test
+    image: novadityap/attendance-platform-server-test
     build:
       context: ./server
       dockerfile: Dockerfile
@@ -13,10 +13,10 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - attendance-app-test
+      - attendance-platform-test
 
   client:
-    image: novadityap/attendance-app-client-test
+    image: novadityap/attendance-platform-client-test
     build:
       context: ./client
       dockerfile: Dockerfile
@@ -29,7 +29,7 @@ services:
     env_file:
       - ./client/.env
     networks:
-      - attendance-app-test
+      - attendance-platform-test
 
   postgres:
     image: postgres:17-alpine
@@ -43,7 +43,7 @@ services:
       timeout: 5s
       retries: 10
     networks:
-      - attendance-app-test
+      - attendance-platform-test
 
 networks:
-  attendance-app-test:
+  attendance-platform-test:

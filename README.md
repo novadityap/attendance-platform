@@ -28,8 +28,8 @@ A full-stack platform for managing employee attendance, featuring authentication
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/novadityap/attendance-app.git
-   cd attendance-app
+   git clone https://github.com/novadityap/attendance-platform.git
+   cd attendance-platform
    ```
 
 2. **Prepare environment variables:**
@@ -43,19 +43,13 @@ A full-stack platform for managing employee attendance, featuring authentication
 
    (You can create them manually or copy from `.env.example` if available.)
 
-4. **Start the application:**
+3. **Start the application:**
 
    ```bash
    docker compose -f docker-compose.development.yml up -d --build
    ```
 
-3. **Seed the database:**
-
-   ```bash
-   docker compose -f docker-compose.development.yml exec server php artisan migrate:fresh --seed
-   ```
-
-5. **Access URLs:**
+4. **Access URLs:**
    - Frontend: [http://localhost:3000](http://localhost:3000)
    - Backend API: [http://localhost:8000/api](http://localhost:8000/api)
 

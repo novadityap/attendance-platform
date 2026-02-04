@@ -1,11 +1,15 @@
 services:
   server:
-    image: novadityap/attendance-app-server-dev
-    container_name: attendance-app-server-dev
+    image: novadityap/attendance-platform-server-dev
+    container_name: attendance-platform-server-dev
     build:
       context: ./server
       dockerfile: Dockerfile
-    command: php artisan serve --host=0.0.0.0
+    command: > 
+      sh -c "
+        php artisan migrate:fresh --seed --force &&
+        php artisan serve --host=0.0.0.0
+      "
     env_file:
       - ./server/.env
     ports:
@@ -16,11 +20,11 @@ services:
     volumes:
       - ./server:/app
     networks:
-      - attendance-app-dev
+      - attendance-platform-dev
 
   client:
-    image: novadityap/attendance-app-client-dev
-    container_name: attendance-app-client-dev
+    image: novadityap/attendance-platform-client-dev
+    container_name: attendance-platform-client-dev
     build:
       context: ./client
       dockerfile: Dockerfile
@@ -33,10 +37,10 @@ services:
     volumes:
       - ./client:/app
     networks:
-      - attendance-app-dev
+      - attendance-platform-dev
 
   postgres:
-    container_name: attendance-app-postgres-dev
+    container_name: attendance-platform-postgres-dev
     image: postgres:17-alpine
     ports:
       - "5432:5432"
@@ -47,11 +51,11 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: attendance_app_dev
     networks:
-      - attendance-app-dev
+      - attendance-platform-dev
 
 volumes:
   attendance-postgres-data:
     name: attendance-postgres-data
 networks:
-  attendance-app-dev:
-    name: attendance-app-dev
+  attendance-platform-dev:
+    name: attendance-platform-dev

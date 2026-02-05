@@ -18,8 +18,8 @@ class DepartmentSeeder extends Seeder
       'id' => Str::uuid(),
       'name' => 'IT',
       'min_check_in_time' => '06:00:00',
+      'max_check_in_time' => '16:00:00',
       'min_check_out_time' => '16:00:00',
-      'max_check_in_time' => '08:00:00',
       'max_check_out_time' => '22:00:00',
     ]);
 
@@ -27,8 +27,8 @@ class DepartmentSeeder extends Seeder
       'id' => Str::uuid(),
       'name' => 'HRD',
       'min_check_in_time' => '06:00:00',
+      'max_check_in_time' => '16:00:00',
       'min_check_out_time' => '16:00:00',
-      'max_check_in_time' => '08:00:00',
       'max_check_out_time' => '22:30:00',
     ]);
   }

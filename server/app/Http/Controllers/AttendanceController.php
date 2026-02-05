@@ -100,6 +100,13 @@ class AttendanceController extends Controller
 
     abort_if($now->lt($minCheckIn), 403, "Minimum check in time is {$employee->department->min_check_in_time}");
 
+    $maxCheckIn = Carbon::createFromFormat(
+      'H:i',
+      $employee->department->max_check_in_time,
+      'Asia/Jakarta'
+    )->setDate($now->year, $now->month, $now->day);
+
+    abort_if($now->gt($maxCheckIn), 403, "Maximum check in time is {$employee->department->max_check_in_time}");
 
     $attendance = Attendance::create([
       'employee_id' => $employee->id,
@@ -148,6 +155,14 @@ class AttendanceController extends Controller
     )->setDate($now->year, $now->month, $now->day);
 
     abort_if($now->lt($minCheckOut), 403, "Minimum check out time is {$employee->department->min_check_out_time}");
+
+    $maxCheckOut = Carbon::createFromFormat(
+      'H:i',
+      $employee->department->max_check_out_time,
+      'Asia/Jakarta'
+    )->setDate($now->year, $now->month, $now->day);
+
+    abort_if($now->gt($maxCheckOut), 403, "Maximum check out time is {$employee->department->max_check_out_time}");
 
     $attendance->update([
       'check_out' => now(),

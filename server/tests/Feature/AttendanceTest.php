@@ -1,5 +1,8 @@
 <?php
 
+use Carbon\Carbon;
+use Firebase\JWT\JWT;
+
 describe('GET /api/attendances/search', function () {
   beforeEach(function () {
     createTestDepartment();
@@ -54,18 +57,26 @@ describe('GET /api/attendances/today', function () {
   });
 });
 
-describe('POST /api/attendances/checkIn', function () {
-  beforeEach(function () {
-    createTestDepartment();
-    createTestEmployee();
-    createAccessToken();
-  });
+  describe('POST /api/attendances/checkIn', function () {
+    beforeEach(function () {
+      $now = Carbon::now()->setTime(7, 0);
 
-  afterEach(function () {
-    removeAllTestAttendances();
-    removeAllTestEmployees();
-    removeAllTestDepartments();
-  });
+      Carbon::setTestNow($now);
+      JWT::$timestamp = $now->timestamp;
+
+      createTestDepartment();
+      createTestEmployee();
+      createAccessToken();
+    });
+
+    afterEach(function () {
+      removeAllTestAttendances();
+      removeAllTestEmployees();
+      removeAllTestDepartments();
+
+      Carbon::setTestNow();
+      JWT::$timestamp = null;
+    });
 
   it('should return an error if employee already checked in today', function () {
     createTestAttendance();
@@ -90,6 +101,11 @@ describe('POST /api/attendances/checkIn', function () {
 
 describe('PUT /api/attendances/checkOut', function () {
   beforeEach(function () {
+    $now = Carbon::now()->setTime(16, 0);
+
+    Carbon::setTestNow($now);
+    JWT::$timestamp = $now->timestamp;
+
     createTestDepartment();
     createTestEmployee();
     createAccessToken();
@@ -99,6 +115,9 @@ describe('PUT /api/attendances/checkOut', function () {
     removeAllTestAttendances();
     removeAllTestEmployees();
     removeAllTestDepartments();
+
+    Carbon::setTestNow();
+    JWT::$timestamp = null;
   });
 
   it('should return an error if employee has not checked in today', function () {

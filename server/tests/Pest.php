@@ -31,12 +31,17 @@ function getTestRefreshToken(): ?RefreshToken
 function createTestRefreshToken(): RefreshToken
 {
   $employee = getTestEmployee();
+  $issuedAt = Carbon::now();
+
   $token = JWT::encode(
     [
       'sub' => $employee->id,
       'role' => $employee->role->name,
-      'iat' => now()->timestamp,
-      'exp' => now()->addMinutes((int) config('auth.jwt_refresh_expires'))->timestamp
+      'iat' => $issuedAt->timestamp,
+      'exp' => $issuedAt
+        ->copy()
+        ->addMinutes((int) config('auth.jwt_refresh_expires'))
+        ->timestamp
     ],
     config('auth.jwt_refresh_secret'),
     config('auth.jwt_algo')
@@ -45,7 +50,9 @@ function createTestRefreshToken(): RefreshToken
   return RefreshToken::create([
     'token' => $token,
     'employee_id' => $employee->id,
-    'expires_at' => Carbon::now()->addMinutes(5),
+    'expires_at' => $issuedAt
+      ->copy()
+      ->addMinutes((int) config('auth.jwt_refresh_expires')),
   ]);
 }
 
@@ -111,28 +118,24 @@ function getTestDepartment(string $name = 'test'): ?Department
 
 function createTestDepartment(array $fields = []): Department
 {
-  $now = Carbon::now('Asia/Jakarta');
-
   return Department::create(array_merge([
     'name' => 'test',
-    'min_check_in_time' => $now->copy()->subMinute()->format('H:i'),
-    'min_check_out_time' => $now->copy()->subMinute()->format('H:i'),
-    'max_check_in_time' => $now->copy()->addHours(8)->format('H:i'),
-    'max_check_out_time' => $now->copy()->addHours(8)->format('H:i'),
+    'min_check_in_time' => '06:00',
+    'max_check_in_time' => '16:00',
+    'min_check_out_time' => '16:00',
+    'max_check_out_time' => '23:00',
   ], $fields));
 }
 
 function createManyTestDepartments(): void
 {
-  $now = Carbon::now('Asia/Jakarta');
-
   foreach (range(0, 14) as $i) {
     Department::create([
       'name' => "test{$i}",
-      'min_check_in_time' => $now->copy()->subMinute()->format('H:i'),
-      'min_check_out_time' => $now->copy()->subMinute()->format('H:i'),
-      'max_check_in_time' => $now->copy()->addHours(8)->format('H:i'),
-      'max_check_out_time' => $now->copy()->addHours(8)->format('H:i'),
+      'min_check_in_time' => '06:00',
+      'max_check_in_time' => '16:00',
+      'min_check_out_time' => '16:00',
+      'max_check_out_time' => '23:00',
     ]);
   }
 }

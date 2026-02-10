@@ -1,4 +1,4 @@
-# Attendance App
+# Employee Attendance Platform
 
 A full-stack platform for managing employee attendance, featuring authentication, role-based access control, shift management, time tracking (check-in/check-out), and an admin dashboard for real-time monitoring.
 
